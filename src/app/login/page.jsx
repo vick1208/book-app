@@ -41,7 +41,9 @@ export default function Login() {
 
 
         <div>
-            <h1>Login</h1>
+            <h1>Log-in</h1>
+            <Buttons onClick={()=>alert("Tidak dapat melakukan login untuk sementara. HTTP 422")} 
+            text = "Info error"/>
             <form onSubmit={loginHandler}>
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Masukkan Alamat Email" />
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Masukkan Password" />
@@ -51,7 +53,6 @@ export default function Login() {
 
             </form>
             
-            {/* Masih belum bisa dipakai karena HTTP error 422  (Unprocessable Entity) */}
         </div>
     );
 }
