@@ -1,9 +1,6 @@
 "use client"
 
 import Buttons from '@/components/Buttons';
-// export const metadata ={
-//     title: "Login"
-// }
 export default function Login() {
     return (
         <div>
