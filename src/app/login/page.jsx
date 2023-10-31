@@ -12,14 +12,24 @@ export default function Login() {
 
     const [valid, setValid] = useState([]);
 
-    const loginHandler = async (ev) => {
-        ev.preventDefault();
+    const loginHandler = async (e) => {
+        e.preventDefault();
         const formData = new FormData();
 
         formData.append('email', email);
         formData.append('password', password);
 
-        await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/api/login.php`, formData)
+        let object = {};
+        formData.forEach((value,key) => object[key]=value);
+        let json = JSON.stringify(object);
+        // console.log(json);
+        // const customConfig = {
+        //     headers: {
+        //     'Content-Type': 'application/json'
+        //     }
+        // };
+
+        await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/api/login.php`, json)
             .then((response) => {
                 Cookies.set('token', response.data.token);
                 // redirect to dashboard
@@ -28,13 +38,22 @@ export default function Login() {
                 setValid(error.response.data);
             })
 
+        // axios({
+        //     method: 'post',
+        //     url: `${process.env.NEXT_PUBLIC_API_BACKEND}/api/login.php`,
+        //     data:{
+        //     }
+        // });
+
+
+
     };
 
     useEffect(() => {
 
-        if (Cookies.get('token')) {
-            Router.push('/dashboard');
-        }
+        // if (Cookies.get('token')) {
+        //     Router.push('/dashboard');
+        // }
 
     }, []);
     return (
