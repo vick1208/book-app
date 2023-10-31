@@ -4,7 +4,8 @@ import Buttons from '@/components/Buttons';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import { Router } from 'next/router';
+import Router from 'next/router';
+
 export default function Login() {
 
     const [email, setEmail] = useState('');
@@ -20,58 +21,69 @@ export default function Login() {
         formData.append('password', password);
 
         let object = {};
-        formData.forEach((value,key) => object[key]=value);
+        formData.forEach((value, key) => object[key] = value);
         let json = JSON.stringify(object);
         // console.log(json);
-        // const customConfig = {
-        //     headers: {
-        //     'Content-Type': 'application/json'
-        //     }
-        // };
 
-        await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/api/login.php`, json)
+        // const result = await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/api/login.php`,json,customConfig)
+
+        // console.log(result.data.data);
+
+        await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/api/login`, json)
             .then((response) => {
-                Cookies.set('token', response.data.token);
-                // redirect to dashboard
+
+                //set token on cookies
+                Cookies.set('token', response.data.json);
+
+                //redirect to dashboard
                 Router.push('/dashboard');
-            }).catch((error) => {
+            })
+            .catch((error) => {
+
+                //assign error to state "validation"
                 setValid(error.response.data);
             })
 
-        // axios({
-        //     method: 'post',
-        //     url: `${process.env.NEXT_PUBLIC_API_BACKEND}/api/login.php`,
-        //     data:{
-        //     }
-        // });
-
-
-
     };
 
+
     useEffect(() => {
+        if (Cookies.get('token')) {
+            console.log('get token');
+            
+        }
+    });
 
-        // if (Cookies.get('token')) {
-        //     Router.push('/dashboard');
-        // }
 
-    }, []);
     return (
 
 
         <div>
             <h1>Log-in</h1>
-            <Buttons onClick={()=>alert("Tidak dapat melakukan login untuk sementara. HTTP 422")} 
-            text = "Info error"/>
+            <Buttons onClick={() => alert("Tidak dapat melakukan login untuk sementara. HTTP 422")}
+                text="Info error" />
             <form onSubmit={loginHandler}>
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Masukkan Alamat Email" />
+                {
+                    valid.email && (
+                        <div>
+                            {valid.email[0]}
+                        </div>
+                    )
+                }
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Masukkan Password" />
 
-                {/* <button type="submit">LOGIN</button> */}
+                {
+                    valid.password && (
+                        <div>
+                            {valid.password[0]}
+                        </div>
+                    )
+                }
                 <input type="submit" value="login" />
 
             </form>
-            
+
         </div>
     );
 }
