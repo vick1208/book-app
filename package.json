@@ -10,14 +10,11 @@
   },
   "dependencies": {
     "axios": "^1.6.0",
-    "js-cookie": "^3.0.5",
+    "jose": "^5.0.1",
+    "jsonwebtoken": "^9.0.2",
     "next": "14.0.0",
     "react": "^18",
-    "react-dom": "^18"
-  },
-  "devDependencies": {
-    "@types/node": "^20.8.10",
-    "@types/react": "^18.2.33",
-    "typescript": "^5.2.2"
+    "react-dom": "^18",
+    "universal-cookie": "^6.1.1"
   }
 }
