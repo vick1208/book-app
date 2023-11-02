@@ -9,7 +9,7 @@ export async function POST(request) {
 
     if (email === "admin@mail.com" && password === "qwertyui") {
         const token = sign({
-            email: email,
+            email,
             username: "admin",
         }, 'my_strong_token_key',
             { expiresIn: '1h' }
