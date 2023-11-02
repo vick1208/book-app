@@ -1,34 +1,38 @@
-import { getJwtSecretKey } from "@/libs/auth";
-import { SignJWT } from "jose";
+import { sign } from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
 
 export async function POST(request) {
     const { email, password } = await request.json();
 
-    if (email === "admin@mail.com" && password === "qwertyui") {
-        const token = await new SignJWT({
-            email: email,
-        }).setProtectedHeader({ alg: 'HS256' })
-            .setIssuedAt('http://localhost/pinjam-buku/')
-            .setExpirationTime("3600s")
-            .sign(getJwtSecretKey());
+    // masih belum terhubung dengan source code backend dan mysql
 
-        const response = NextResponse.json(
-            { success: true },
-            {
-                status: 200,
-                headers: { "content-type": "application/json" }
-            }
+    if (email === "admin@mail.com" && password === "qwertyui") {
+        const token = sign({
+            email: email,
+            username: "admin",
+        }, 'my_strong_token_key',
+            { expiresIn: '1h' }
         );
+        const response = NextResponse.json({
+            token,
+        });
 
         response.cookies.set({
-            name: "token",
+            name: "myTokenName",
             value: token,
-            path: "/"
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "development",
+            sameSite: "strict",
+            maxAge: 1000 * 60 * 60,
+            path: "/",
         });
-        return response
+        return response;
+    } else {
+
+        return NextResponse.json({ status: 401 },
+            { message: "Credentials Invalid" },
+            );
     }
-    return NextResponse.json({ success: false });
 
 }
