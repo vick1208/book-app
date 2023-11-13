@@ -7,34 +7,39 @@ import { useState } from "react";
 
 export default function LoginPage() {
 
-    const [credentials, setCredentials] = useState({
-        email: "",
-        password: "",
-    });
-    const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const result = await axios.post("/api/auth/login", credentials);
-        if (result.status === 200) {
-            router.push("/dashboard");
-        }
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('password', password);
+
+        await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/pinjam-buku/api/login.php`, formData).then(function (response) {
+            console.log(response);
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+
+
+        // if (result.status === 200) {
+        //     router.push("/dashboard");
+        // }
     };
+
 
     return (
         <main>
+
             <h1>Login Page</h1>
             <form onSubmit={handleSubmit}>
-                <input type="email" 
-                placeholder="email" 
-                onChange={(e)=>setCredentials({
-                    ...credentials, 
-                    email: e.target.value,
-                })} />
-                <input type="password" placeholder="password" onChange={(e)=>setCredentials({
-                    ...credentials, 
-                    email: e.target.value,
-                })} />
+                <input type="email"
+                    placeholder="email"
+                    onChange={(e) => setEmail(e.target.value)} />
+                <input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
                 <button>Login</button>
             </form>
         </main>
