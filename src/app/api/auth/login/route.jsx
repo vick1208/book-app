@@ -22,7 +22,7 @@ export async function POST(request) {
             name: "myTokenName",
             value: token,
             httpOnly: true,
-            secure: process.env.NODE_ENV === "development",
+            secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
             maxAge: 1000 * 60 * 60,
             path: "/",
