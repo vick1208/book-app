@@ -14,6 +14,11 @@ export default function LoginPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const headers = {
+            'Content-Type': "application/json"
+        }
+
         const formData = new FormData();
         formData.append('email', email);
         formData.append('password', password);
