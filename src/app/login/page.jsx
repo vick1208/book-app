@@ -17,7 +17,8 @@ export default function LoginPage() {
         formData.append('email', email);
         formData.append('password', password);
 
-        await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/pinjam-buku/api/login.php`, formData).then(function (response) {
+        await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/pinjam-buku/api/login.php`, formData)
+        .then(function (response) {
             console.log(response);
         }).catch(function (error) {
             console.log(error);
