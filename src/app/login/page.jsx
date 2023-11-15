@@ -9,7 +9,7 @@ export default function LoginPage() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,9 +25,6 @@ export default function LoginPage() {
 
 
 
-        // if (result.status === 200) {
-        //     router.push("/dashboard");
-        // }
     };
 
 
@@ -39,7 +36,9 @@ export default function LoginPage() {
                 <input type="email"
                     placeholder="email"
                     onChange={(e) => setEmail(e.target.value)} />
-                <input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
+                <input type="password"
+                    placeholder="password"
+                    onChange={(e) => setPassword(e.target.value)} />
                 <button>Login</button>
             </form>
         </main>
