@@ -1,6 +1,7 @@
 "use client"
 
 import axios from "axios";
+import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -17,9 +18,15 @@ export default function LoginPage() {
         formData.append('email', email);
         formData.append('password', password);
 
-        await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/pinjam-buku/api/login.php`, formData)
+        const data = {};
+        formData.forEach((value, key) => (data[key] = value));
+        
+
+        await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/pinjam-buku/api/login.php`, data)
         .then(function (response) {
             console.log(response);
+            // Cookies.set('token', response.json.token);
+            // router.push("/dashboard");
         }).catch(function (error) {
             console.log(error);
         });
