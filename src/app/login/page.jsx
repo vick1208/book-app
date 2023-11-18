@@ -48,7 +48,6 @@ export default function LoginPage() {
 
     return (
         <main>
-
             <h1>Login Page</h1>
             <form onSubmit={handleSubmit}>
                 <input type="email" value={email}

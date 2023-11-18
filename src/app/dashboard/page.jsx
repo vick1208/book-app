@@ -24,14 +24,11 @@ export default function Dashboard() {
 
     const logoutHandler = async function () {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        
+
         await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/api/logout`)
             .then(() => {
-
                 Cookies.remove("token");
-
-                
-                Router.push('/login');
+                router.push('/login');
             });
     };
 
