@@ -1,34 +1,48 @@
 "use client"
 
 import axios from "axios";
+import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Dashboard() {
 
-    const [user, setUser] = useState({
-        email: "",
-        username: ""
-    });
+    const token = Cookies.get('token');
+
+    const [user, setUser] = useState({});
+
     const router = useRouter();
 
-    const logout = async () => {
-        try {
-            const res = await axios.get("/api/auth/logout");
-            console.log(res);
-        } catch (error) {
-            console.error(error.message);
-        }
-        router.push("/login");
-    };
 
+
+    const fetchData = async function () {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        await axios.get(`${process.env.NEXT_PUBLIC_API_BACKEND}/api/user`).then(function (response) {
+            setUser(response.data);
+        });
+    }
+
+    const logoutHandler = async function () {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        
+        await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/api/logout`)
+            .then(() => {
+
+                Cookies.remove("token");
+
+                
+                Router.push('/login');
+            });
+    };
 
     return (
 
         <div>
-            <h1>Halaman Dashboard</h1>
-            {JSON.stringify(user)}
-            <button onClick={() => logout()}>Logout</button>
+
+
+            SELAMAT DATANG {user.name}
+            <hr />
+            <button onClick={logoutHandler}></button>
         </div>
 
 

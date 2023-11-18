@@ -1,58 +1,63 @@
 "use client"
-
+// impor library axios
 import axios from "axios";
+// impor library Cookies
 import Cookies from "js-cookie";
+// impor library navigation
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+// impor fungsi useState
+import { useEffect, useState } from "react";
 
 
 export default function LoginPage() {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const router = useRouter();
 
+    // define state untuk email dan password
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    // define state untuk email dan password
+    const [validation, setValidation] = useState([]);
+
+    // fungsi handleSubmit
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const headers = {
-            'Content-Type': "application/json"
-        }
+        //    inisialisasi formData
+        const fData = new FormData();
 
-        const formData = new FormData();
-        formData.append('email', email);
-        formData.append('password', password);
+        fData.append('email', email);
+        fData.append('password', password);
 
-        const data = {};
-        formData.forEach((value, key) => (data[key] = value));
-        
-
-        await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/pinjam-buku/api/login.php`, data)
-        .then(function (response) {
-            console.log(response);
-            // Cookies.set('token', response.json.token);
-            // router.push("/dashboard");
-        }).catch(function (error) {
-            console.log(error);
-        });
-
-
-
+        await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/api/login`, fData)
+            .then(function (response) {
+                console.log(response);
+                Cookies.set('token', response.json.token);
+                router.push("/dashboard");
+            }).catch(function (error) {
+                setValidation(error.response.data);
+            });
     };
 
+    useEffect(function () {
+        if (Cookies.get('token')) {
+            router.push('/dashboard');
+        }
+    }, []);
 
     return (
         <main>
 
             <h1>Login Page</h1>
             <form onSubmit={handleSubmit}>
-                <input type="email"
-                    placeholder="email"
+                <input type="email" value={email}
+                    placeholder="Masukkan Alamat Email"
                     onChange={(e) => setEmail(e.target.value)} />
-                <input type="password"
-                    placeholder="password"
+                <input type="password" value={password}
+                    placeholder="Masukkan Password"
                     onChange={(e) => setPassword(e.target.value)} />
-                <button>Login</button>
+                <button type="submit">Login</button>
             </form>
         </main>
     );
