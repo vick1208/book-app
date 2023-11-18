@@ -3,7 +3,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
 
@@ -21,6 +21,12 @@ export default function Dashboard() {
             setUser(response.data);
         });
     }
+    useEffect(function(){
+        if (!token) {
+            router.push('/login');
+        }
+        fetchData();
+    },[]);
 
     const logoutHandler = async function () {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
