@@ -33,9 +33,10 @@ export default function LoginPage() {
         await axios.post(`${process.env.NEXT_PUBLIC_API_BACKEND}/api/login`, fData)
             .then(function (response) {
                 console.log(response);
-                Cookies.set('token', response.json.token);
+                Cookies.set('token', response.data.token);
                 router.push("/dashboard");
             }).catch(function (error) {
+                console.log(error.response.data);
                 setValidation(error.response.data);
             });
     };

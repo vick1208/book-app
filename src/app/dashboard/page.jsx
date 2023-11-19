@@ -43,9 +43,11 @@ export default function Dashboard() {
         <div>
 
 
-            SELAMAT DATANG {user.name}
+            SELAMAT DATANG! <br />
+             {user.name} <br />
+             {user.email}
             <hr />
-            <button onClick={logoutHandler}></button>
+            <button onClick={logoutHandler}>Logout</button>
         </div>
 
 
